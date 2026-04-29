@@ -1,0 +1,10 @@
+{
+  "name": "risk-platform",
+  "version": "1.0.0",
+  "scripts": {
+    "seed": "cd backend && node db/seed.js",
+    "backend": "cd backend && node server.js",
+    "frontend": "cd frontend && npm run dev",
+    "start": "start cmd /k \"cd backend && node server.js\" && start cmd /k \"cd frontend && npm run dev\""
+  }
+}

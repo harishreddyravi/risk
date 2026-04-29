@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=1280"/>
+<title>Risk Intelligence — Atlas Federal Bank</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body data-theme="modern">
+<div id="app"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="data.jsx"></script>
+<script type="text/babel" src="ui.jsx"></script>
+<script type="text/babel" src="screen-dashboard.jsx"></script>
+<script type="text/babel" src="screens.jsx"></script>
+<script type="text/babel" src="drawers.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script type="text/babel" data-presets="react">
+(() => {
+const { useState, useEffect } = React;
+const { Topbar, Sidenav } = window.RiskUI;
+const { DashboardScreen } = window;
+const { RegulationsScreen, ControlsScreen, ApplicationsScreen, IssuesScreen, FindingsScreen } = window.RiskScreens;
+const { AppDrawer, IssueDrawer, CitationDrawer, Copilot } = window.RiskDrawers;
+const { TweaksPanel, useTweaks, TweakSection, TweakSlider, TweakToggle, TweakRadio } = window;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "theme": "modern",
+  "persona": "auditor",
+  "copilotOn": true,
+  "appetite": 60
+}/*EDITMODE-END*/;
+
+function App() {
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [view, setView] = useState("dashboard");
+  const [drawer, setDrawer] = useState(null); // { kind: 'app'|'issue'|'citation', payload }
+  const data = window.RISK_DATA;
+
+  useEffect(() => {
+    document.body.setAttribute("data-theme", tweaks.theme);
+  }, [tweaks.theme]);
+
+  const counts = {
+    regs: data.REGULATIONS.length,
+    controls: data.CONTROLS.length,
+    apps: data.APPLICATIONS.length,
+    issues: data.ISSUES.length
+  };
+
+  const openApp      = (a)         => setDrawer({ kind: "app",      payload: a });
+  const openIssue    = (i)         => setDrawer({ kind: "issue",    payload: i });
+  const openCitation = (reg, sec)  => setDrawer({ kind: "citation", payload: { reg, section: sec } });
+  const openFinding  = (f)         => f.citations[0] && openCitation(f.citations[0].reg, f.citations[0].section);
+  const closeDrawer  = ()          => setDrawer(null);
+
+  const renderScreen = () => {
+    const props = { data, threshold: tweaks.appetite, onOpenApp: openApp, onOpenIssue: openIssue, onOpenCitation: openCitation, onOpenFinding: openFinding };
+    switch (view) {
+      case "dashboard":    return <DashboardScreen {...props}/>;
+      case "regulations":  return <RegulationsScreen {...props}/>;
+      case "controls":     return <ControlsScreen {...props}/>;
+      case "applications": return <ApplicationsScreen {...props}/>;
+      case "issues":       return <IssuesScreen {...props}/>;
+      case "findings":     return <FindingsScreen {...props}/>;
+      default:             return <DashboardScreen {...props}/>;
+    }
+  };
+
+  return (
+    <div className="app-shell" data-screen-label="Risk Intelligence">
+      <Topbar
+        persona={tweaks.persona}
+        setPersona={(p) => setTweak("persona", p)}
+        copilotOn={tweaks.copilotOn}
+        setCopilotOn={(v) => setTweak("copilotOn", v)}
+        theme={tweaks.theme}
+        setTheme={(t) => setTweak("theme", t)}
+      />
+      <Sidenav view={view} setView={setView} counts={counts}/>
+      <main className="main">
+        <div className="main-inner" style={{ paddingRight: tweaks.copilotOn ? 400 : 0 }}>
+          {renderScreen()}
+        </div>
+      </main>
+
+      {tweaks.copilotOn && <Copilot onClose={() => setTweak("copilotOn", false)} onOpenCitation={openCitation}/>}
+
+      {drawer && drawer.kind === "app"      && <AppDrawer      app={drawer.payload}     data={data} onClose={closeDrawer} onOpenIssue={openIssue} onOpenCitation={openCitation}/>}
+      {drawer && drawer.kind === "issue"    && <IssueDrawer    issue={drawer.payload}   data={data} onClose={closeDrawer} onOpenCitation={openCitation}/>}
+      {drawer && drawer.kind === "citation" && <CitationDrawer reg={drawer.payload.reg} section={drawer.payload.section} data={data} onClose={closeDrawer}/>}
+
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Persona"/>
+        <TweakRadio label="Active role"
+          value={tweaks.persona}
+          options={[{ value: "cro", label: "CRO" }, { value: "analyst", label: "Analyst" }, { value: "auditor", label: "Auditor" }]}
+          onChange={(v) => setTweak("persona", v)}/>
+        <TweakSection label="Theme"/>
+        <TweakRadio label="Visual style"
+          value={tweaks.theme}
+          options={[{ value: "modern", label: "Modern" }, { value: "banking", label: "Banking" }, { value: "dark", label: "Dark" }]}
+          onChange={(v) => setTweak("theme", v)}/>
+        <TweakSection label="AI"/>
+        <TweakToggle label="Show Copilot panel"
+          value={tweaks.copilotOn}
+          onChange={(v) => setTweak("copilotOn", v)}/>
+        <TweakSection label="Risk Appetite"/>
+        <TweakSlider label="Composite threshold"
+          min={40} max={90} step={1} unit=" pts"
+          value={tweaks.appetite}
+          onChange={(v) => setTweak("appetite", v)}/>
+      </TweaksPanel>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("app")).render(<App/>);
+})();
+</script>
+</body>
+</html>

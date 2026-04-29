@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node *)",
+      "Bash(npm uninstall *)",
+      "Bash(npm install *)",
+      "Bash(curl *)",
+      "Bash(npm run *)",
+      "Bash(python -c \"import sys,json; data=json.load\\(sys.stdin\\); print\\([a['name'] for a in data]\\)\")",
+      "Bash(python -c \"import sys,json; data=json.load\\(sys.stdin\\); [print\\(f'{i[\\\\\"rating\\\\\"]:8} {i[\\\\\"status\\\\\"]:12} {i[\\\\\"title\\\\\"][:60]}'\\) for i in data]\")",
+      "Bash(pkill -f \"node server.js\")",
+      "Bash(pkill -f \"vite\")",
+      "PowerShell(netstat *)",
+      "PowerShell(taskkill *)",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('regs:', len\\(d['regulations']\\), 'controls:', len\\(d['controls']\\), 'issues:', len\\(d['issues']\\), 'apps:', len\\(d['applications']\\), 'findings:', len\\(d['findings']\\)\\)\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('API proxy OK - regs:', len\\(d['regulations']\\), 'findings:', len\\(d['findings']\\)\\)\")"
+    ]
+  }
+}
