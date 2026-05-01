@@ -19,6 +19,7 @@ export default function App() {
   const [copilotOn, setCopilotOn] = useState(false);
   const [drawer, setDrawer] = useState(null);
   const [error, setError] = useState(null);
+  const [navOpen, setNavOpen] = useState(false);
 
   useEffect(() => {
     fetch('/api/dashboard')
@@ -67,9 +68,10 @@ export default function App() {
   }
 
   return (
-    <div className="app-shell">
-      <Topbar copilotOn={copilotOn} setCopilotOn={setCopilotOn} />
-      <Sidenav view={view} setView={setView} counts={counts} />
+    <div className={`app-shell${navOpen ? ' nav-open' : ''}`}>
+      <Topbar copilotOn={copilotOn} setCopilotOn={setCopilotOn} onNavToggle={() => setNavOpen(v => !v)} />
+      <div className="sidenav-mask" onClick={() => setNavOpen(false)} />
+      <Sidenav view={view} setView={v => { setView(v); setNavOpen(false); }} counts={counts} />
       <main className="main">
         <div className="main-inner">
           {!data ? (

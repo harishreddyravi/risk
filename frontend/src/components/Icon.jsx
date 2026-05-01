@@ -23,6 +23,7 @@ const PATHS = {
   check:     <><path d="M20 6L9 17l-5-5"/></>,
   user:      <><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.5 3.5-7 8-7s8 2.5 8 7"/></>,
   sliders:   <><path d="M4 6h12M4 12h6M4 18h10"/><circle cx="18" cy="6" r="2"/><circle cx="13" cy="12" r="2"/><circle cx="16" cy="18" r="2"/></>,
+  menu:      <><path d="M4 6h16M4 12h16M4 18h16"/></>,
 };
 
 export default function Icon({ name, size = 16 }) {

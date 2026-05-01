@@ -46,7 +46,7 @@ export default function Dashboard({ data, onOpenApp, onOpenFinding, onOpenIssue,
       </AiSummary>
 
       {/* KPI row */}
-      <div className="grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)', marginBottom: 16 }}>
+      <div className="grid kpi-grid" style={{ marginBottom: 16 }}>
         <div className="kpi">
           <div className="kpi-label">Composite Residual Risk</div>
           <div className="row" style={{ alignItems: 'baseline', gap: 10 }}>
@@ -84,7 +84,7 @@ export default function Dashboard({ data, onOpenApp, onOpenFinding, onOpenIssue,
       </div>
 
       {/* Trend + Radar */}
-      <div className="grid" style={{ gridTemplateColumns: '1.4fr 1fr', marginBottom: 16 }}>
+      <div className="grid chart-grid-a" style={{ marginBottom: 16 }}>
         <div className="card">
           <div className="card-head">
             <div>
@@ -117,7 +117,7 @@ export default function Dashboard({ data, onOpenApp, onOpenFinding, onOpenIssue,
       </div>
 
       {/* Heatmap + Coverage */}
-      <div className="grid" style={{ gridTemplateColumns: '1fr 1.3fr', marginBottom: 16 }}>
+      <div className="grid chart-grid-b" style={{ marginBottom: 16 }}>
         <div className="card">
           <div className="card-head">
             <div>
@@ -155,7 +155,7 @@ export default function Dashboard({ data, onOpenApp, onOpenFinding, onOpenIssue,
       </div>
 
       {/* Sankey + AI Findings */}
-      <div className="grid" style={{ gridTemplateColumns: '1.5fr 1fr' }}>
+      <div className="grid chart-grid-c">
         <div className="card">
           <div className="card-head">
             <div>

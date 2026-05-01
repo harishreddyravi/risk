@@ -1,9 +1,12 @@
 import React from 'react';
 import Icon from './Icon.jsx';
 
-export default function Topbar({ copilotOn, setCopilotOn, onSearch }) {
+export default function Topbar({ copilotOn, setCopilotOn, onSearch, onNavToggle }) {
   return (
     <header className="topbar">
+      <button className="nav-toggle" onClick={onNavToggle} aria-label="Open navigation">
+        <Icon name="menu" size={16} />
+      </button>
       <div className="brand">
         <div className="brand-mark">R</div>
         <span>Risk Intelligence</span>

@@ -13,7 +13,8 @@
       "PowerShell(netstat *)",
       "PowerShell(taskkill *)",
       "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('regs:', len\\(d['regulations']\\), 'controls:', len\\(d['controls']\\), 'issues:', len\\(d['issues']\\), 'apps:', len\\(d['applications']\\), 'findings:', len\\(d['findings']\\)\\)\")",
-      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('API proxy OK - regs:', len\\(d['regulations']\\), 'findings:', len\\(d['findings']\\)\\)\")"
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('API proxy OK - regs:', len\\(d['regulations']\\), 'findings:', len\\(d['findings']\\)\\)\")",
+      "PowerShell(ls -Recurse \"C:\\\\Users\\\\iamha\\\\risk\\\\frontend\\\\src\" -File | ForEach-Object { $_.FullName.Replace\\('C:\\\\Users\\\\iamha\\\\risk\\\\frontend\\\\', ''\\) })"
     ]
   }
 }

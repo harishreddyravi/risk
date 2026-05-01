@@ -702,3 +702,99 @@ body[data-theme="banking"] {
 }
 .form-select:focus { border-color: var(--accent); }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* ── Dashboard grid classes (desktop defaults) ──────────────────────────── */
+.kpi-grid    { grid-template-columns: repeat(4, 1fr); }
+.chart-grid-a { grid-template-columns: 1.4fr 1fr; }
+.chart-grid-b { grid-template-columns: 1fr 1.3fr; }
+.chart-grid-c { grid-template-columns: 1.5fr 1fr; }
+
+/* ── Mobile nav toggle (hidden on desktop) ──────────────────────────────── */
+.nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-3);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background .1s, color .1s;
+}
+.nav-toggle:hover { background: var(--bg-sunken); color: var(--ink); }
+
+.sidenav-mask {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(13,17,23,.4);
+  z-index: 79;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+[data-theme="dark"] .sidenav-mask { background: rgba(0,0,0,.55); }
+
+/* ── Tablet (≤ 1024px) ──────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── Mobile (≤ 768px) ───────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .app-shell { grid-template-columns: 1fr; }
+
+  .sidenav {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 240px;
+    z-index: 80;
+    transform: translateX(-100%);
+    transition: transform 0.25s cubic-bezier(.2,.8,.2,1);
+  }
+  .app-shell.nav-open .sidenav { transform: translateX(0); }
+
+  .sidenav-mask {
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .app-shell.nav-open .sidenav-mask {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-toggle { display: flex; }
+  .brand-sub  { display: none; }
+  .topbar-search { display: none; }
+  .persona-switch { display: none; }
+  .theme-dots { display: none; }
+
+  .main { padding: 20px 16px 60px; }
+
+  .page-head { flex-direction: column; align-items: flex-start; gap: 10px; }
+
+  .kpi-grid    { grid-template-columns: 1fr 1fr; }
+  .chart-grid-a,
+  .chart-grid-b,
+  .chart-grid-c { grid-template-columns: 1fr; }
+
+  .ai-summary { grid-template-columns: 28px 1fr; }
+  .ai-meta    { display: none; }
+
+  .cov-row { grid-template-columns: 1fr 52px; }
+  .cov-row .bar { display: none; }
+
+  .form-row { grid-template-columns: 1fr; }
+
+  .copilot { left: 8px; right: 8px; width: auto; }
+}
+
+/* ── Small mobile (≤ 480px) ─────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+  .topbar   { padding: 0 12px; gap: 8px; }
+  .main     { padding: 16px 12px 60px; }
+}
